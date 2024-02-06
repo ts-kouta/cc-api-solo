@@ -33,6 +33,14 @@ setupExpressServer = () => {
     res.send(memo);
   });
 
+  app.patch("/api/memos/:memo_id", (req, res) => {
+    const targetIndex = memo.findIndex(
+      (memo) => +memo.memo_id === +req.params.memo_id
+    );
+    memo[targetIndex].memo = req.body.memo;
+    res.send(memo);
+  });
+
   return app;
 };
 

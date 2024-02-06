@@ -42,11 +42,22 @@ describe("Memo API Server", () => {
         create_date: "2024-02-06",
         update_date: "2024-02-06",
       };
-      const afterRes = await request.post("/api/memos").send(addMemo);
-      afterRes.should.be.json;
-      JSON.parse(afterRes.text)
+      const res = await request.post("/api/memos").send(addMemo);
+      res.should.be.json;
+      JSON.parse(res.text)
         .find((memo) => memo.memo_id === 999)
         .memo.should.equal("memo999");
+    });
+
+    describe("PATCH api/memos", () => {
+      it("should update memo", async () => {
+        const fixMemo = { memo: "memo998" };
+        const res = await request.patch("/api/memos/1").send(fixMemo);
+        res.should.be.json;
+        const result = JSON.parse(res.text).find((memo) => memo.memo_id === 1);
+        console.log(result);
+        result.memo.should.equal("memo998");
+      });
     });
   });
 });
