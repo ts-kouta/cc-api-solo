@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const knex = require("./knex");
 
 const app = express();
 app.use(express.json());
@@ -24,12 +25,13 @@ setupExpressServer = () => {
     res.sendFile(path.join(__dirname, "index.html"));
   });
 
-  app.get("/api/memos", (req, res) => {
+  app.get("/api/memos", async (req, res) => {
+    const memo = await knex.select("*").from("memo");
     res.send(memo);
   });
 
-  app.post("/api/memos", (req, res) => {
-    memo.push(req.body);
+  app.post("/api/memos", async (req, res) => {
+    const memo = await knex("memo").returning("id").insert(req.body);
     res.send(memo);
   });
 
