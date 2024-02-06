@@ -41,6 +41,14 @@ setupExpressServer = () => {
     res.send(memo);
   });
 
+  app.delete("/api/memos/:memo_id", (req, res) => {
+    const targetIndex = memo.findIndex(
+      (memo) => +memo.memo_id === +req.params.memo_id
+    );
+    memo.splice(targetIndex, 1);
+    res.send(memo);
+  });
+
   return app;
 };
 

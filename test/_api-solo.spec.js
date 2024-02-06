@@ -49,14 +49,22 @@ describe("Memo API Server", () => {
         .memo.should.equal("memo999");
     });
 
-    describe("PATCH api/memos", () => {
+    describe("PATCH api/memos/:memo_id", () => {
       it("should update memo", async () => {
         const fixMemo = { memo: "memo998" };
         const res = await request.patch("/api/memos/1").send(fixMemo);
         res.should.be.json;
         const result = JSON.parse(res.text).find((memo) => memo.memo_id === 1);
-        console.log(result);
         result.memo.should.equal("memo998");
+      });
+    });
+
+    describe("DELETE api/memos/memo_id", () => {
+      it("should delete memo", async () => {
+        const res = await request.delete("/api/memos/1");
+        res.should.be.json;
+        const result = JSON.parse(res.text).find((memo) => memo.memo_id === 1);
+        result?.should.be.false;
       });
     });
   });
