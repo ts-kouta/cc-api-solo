@@ -59,7 +59,7 @@ describe("Memo API Server", () => {
       });
     });
 
-    describe("DELETE api/memos/memo_id", () => {
+    describe("DELETE api/memos/:memo_id", () => {
       it("should delete memo", async () => {
         const res = await request.delete("/api/memos/1");
         res.should.be.json;
