@@ -33,4 +33,20 @@ describe("Memo API Server", () => {
       JSON.parse(res.text).should.deep.equal(expected);
     });
   });
+
+  describe("POST api/memos", () => {
+    it("should add memo", async () => {
+      const addMemo = {
+        memo_id: 999,
+        memo: "memo999",
+        create_date: "2024-02-06",
+        update_date: "2024-02-06",
+      };
+      const afterRes = await request.post("/api/memos").send(addMemo);
+      afterRes.should.be.json;
+      JSON.parse(afterRes.text)
+        .find((memo) => memo.memo_id === 999)
+        .memo.should.equal("memo999");
+    });
+  });
 });

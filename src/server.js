@@ -28,6 +28,11 @@ setupExpressServer = () => {
     res.send(memo);
   });
 
+  app.post("/api/memos", (req, res) => {
+    memo.push(req.body);
+    res.send(memo);
+  });
+
   return app;
 };
 
