@@ -31,24 +31,24 @@ setupExpressServer = () => {
   });
 
   app.post("/api/memos", async (req, res) => {
-    const memo = await knex("memo").returning("id").insert(req.body);
-    res.send(memo);
+    const memoId = await knex("memo").returning("id").insert(req.body);
+    res.send(memoId[0]);
   });
 
-  app.patch("/api/memos/:memo_id", (req, res) => {
-    const targetIndex = memo.findIndex(
-      (memo) => +memo.memo_id === +req.params.memo_id
-    );
-    memo[targetIndex].memo = req.body.memo;
-    res.send(memo);
+  app.patch("/api/memos/:memo_id", async (req, res) => {
+    const updatedMemoId = await knex("memo")
+      .returning("id")
+      .update(req.body)
+      .where("id", +req.params.memo_id);
+    res.send(updatedMemoId[0]);
   });
 
-  app.delete("/api/memos/:memo_id", (req, res) => {
-    const targetIndex = memo.findIndex(
-      (memo) => +memo.memo_id === +req.params.memo_id
-    );
-    memo.splice(targetIndex, 1);
-    res.send(memo);
+  app.delete("/api/memos/:memo_id", async (req, res) => {
+    const deletedMemoId = await knex("memo")
+      .del()
+      .returning("id")
+      .where("id", +req.params.memo_id);
+    res.send(deletedMemoId[0]);
   });
 
   return app;
